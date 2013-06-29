@@ -1,47 +1,46 @@
 #include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_rotozoom.h>
 #include "eagle.hpp"
 
-#define SHIP_SHAPE_W 60
-#define SHIP_SHAPE_H 80
-#define FLAME_SHAPE_W SHIP_SHAPE_W
-#define FLAME_SHAPE_H 60
-#define FLAME_OVERLAP 10
+/* constants */
+#define SHIP_SHAPE_W         60
+#define SHIP_SHAPE_H         80
+#define FLAME_SHAPE_W        SHIP_SHAPE_W
+#define FLAME_SHAPE_H        60
+#define FLAME_OVERLAP        10
 #define CLEAR_SURFACE_OFFSET 10
 
+/* sprites paths */
+#define SHIP_SPRITE        "sprites/ship.png"
+#define FLAME_SPRITE_BIG   "sprites/flame_big.png"
+#define FLAME_SPRITE_MID   "sprites/flame_mid.png"
+#define FLAME_SPRITE_LOW   "sprites/flame_low.png"
+
 /* the ship class holding its drawing surface and position/size rect
-* it also holds a CEagle object with the internal ship logic.
-*/
+ * it also holds a CEagle object with the internal ship logic.
+ */
 class CShip {
 
 	public:
 		CShip (short int initposx, short int initposy);
-		~CShip();
 		void update (unsigned int timedelta);
-		void draw (SDL_Surface *dstsurface);
+		void draw (SDL_Surface *dst);
+		void clear (SDL_Surface *dst);
 		CEagle *eagle;
 
 	private:
-		/* shipsurface + flamesurface are drawed into surface
-		* the surface rect is the shiprect and the flamerect under
-		* it
-		*/
-		SDL_Surface *shipsurface;     /* for the ship shape */
-		SDL_Surface *flamesurface;    /* for the flame */
-		SDL_Surface *surface;         /* ship + flame */
-		SDL_Surface *rotsurface;      /* ship + flame both rotated */
-		SDL_Surface *clearsurface;    /* clear ship + flame */
-		SDL_Surface *rotclearsurface; /* clear rotated ship + flame */
-		SDL_Rect *shiprect;           /* ship surface rect within the total surface rect */
-		SDL_Rect *flamerect;          /* flame surface rect within the total surface rect */
-		SDL_Rect *rect;               /* the total surface rect */
-		SDL_Rect *oldrect;            /* holds the last total rect for clearing it */
+		SDL_Surface *shipsprite;       /* the ship sprite */
+		SDL_Surface *flamespritebig;   /* the flame sprites */
+		SDL_Surface *flamespritemid;    
+		SDL_Surface *flamespritelow;  
+		SDL_Surface *shiprotsprite;    /* the rotated ship surface */
+		SDL_Surface *flamerotsprite;   /* the rotated flame surface */
+		SDL_Rect *shiprect;            /* rect with ship sprite position and size */
+		SDL_Rect *shiprectclr;         /* rect to clear the ship shape */
+		SDL_Rect *flamerect;           /* rect with flame sprite position and size */
 
 		/* draw the flame? */
-		unsigned short drawflame = 0;
-
-		/* the ship shape is defined as an array of vertex */
-		const short int shapevertx[4] = {1, SHIP_SHAPE_W / 2, SHIP_SHAPE_W - 1, SHIP_SHAPE_W / 2};
-		const short int shapeverty[4] = {SHIP_SHAPE_H - 1, 1, SHIP_SHAPE_H - 1, SHIP_SHAPE_H - 8};
+		unsigned short drawflame; /* 1-> yes, 0->no */
 };
