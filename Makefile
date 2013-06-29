@@ -2,7 +2,7 @@ CXX=g++
 RM=rm -f
 CPPFLAGS=-g -std=c++11
 LDFLAGS=-g
-LDLIBS=-lSDL -lSDL_ttf -lSDL_gfx
+LDLIBS=-lSDL -lSDL_image -lSDL_ttf -lSDL_gfx
 
 SRCS=main.cpp moonlanding.cpp ship.cpp eagle.cpp
 OBJS=$(subst .cpp,.o,$(SRCS))
