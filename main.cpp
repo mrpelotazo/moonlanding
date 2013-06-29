@@ -13,7 +13,11 @@ int main(int argc, char *argv[]) {
 	SDL_Rect shiprect = {0, 0, SHIP_SURFACE_W, SHIP_SURFACE_H};
 	SDL_Rect inforect = {0, SHIP_SURFACE_H, INFO_SURFACE_W, INFO_SURFACE_H};
 	SDL_Rect backrect = {0, 0, SHIP_SURFACE_W, SHIP_SURFACE_H};
-
+	int starlistx[STAR_NUM];
+	int starlisty[STAR_NUM];
+	int grndlistx[MAX_PEAKS];
+	int grndlisty[MAX_PEAKS];
+	int grndlistlength;
 	TTF_Font *font;
 	char shipinfostr[200];
 	char buff[100];
@@ -28,17 +32,7 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
-	if ((shipsurface = initSurface(shiprect)) == NULL) {
-		SDL_Quit();
-		return -1;
-	}
-
 	if ((infosurface = initSurface(inforect)) == NULL) {
-		SDL_Quit();
-		return -1;
-	}
-
-	if ((backsurface = initSurface(backrect)) == NULL) {
 		SDL_Quit();
 		return -1;
 	}
@@ -48,17 +42,7 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
-	if ((clearSurface(shipsurface)) != 0) {
-		SDL_Quit();
-		return -1;
-	}
-
 	if ((clearSurface(infosurface)) != 0) {
-		SDL_Quit();
-		return -1;
-	}
-
-	if ((clearSurface(backsurface)) != 0) {
 		SDL_Quit();
 		return -1;
 	}
@@ -69,7 +53,12 @@ int main(int argc, char *argv[]) {
 	}
 
 	/* draw the stars an the background surface */
-	drawStars(backsurface);
+	genStars(starlistx, starlisty);
+	drawStars(screen, starlistx, starlisty);
+
+	/* draw the ground */
+	genGround(grndlistx, grndlisty, &grndlistlength);
+	drawGround(screen, grndlistx, grndlisty, grndlistlength);
 
 	currenttime = SDL_GetTicks();
 
@@ -89,22 +78,23 @@ int main(int argc, char *argv[]) {
 		/* update ship data */
 		ship.update(timedelta);
 
-		/* draw the ship into the screen surface */
-		ship.draw(shipsurface);
+		/* redraw the ship on the screen */
+		ship.clear(screen);
+		drawStars(screen, starlistx, starlisty);
+		drawGround(screen, grndlistx, grndlisty, grndlistlength);
+		ship.draw(screen);
 
 		/* blit ship info on the screen */
-		showShipInfo(infosurface, ship, font, textcolor);
+		//showShipInfo(infosurface, ship, font, textcolor);
 
 		/* draw surfaces into screen surface */
-		updateScreen(screen, shipsurface, infosurface, backsurface, &shiprect, &inforect, &backrect);
+//		updateScreen(screen, shipsurface, infosurface, backsurface, &shiprect, &inforect, &backrect);
 
 		SDL_Flip(screen);
 	}
 
 	/* free surfaces and quit SDL */
 	SDL_FreeSurface(screen);
-	SDL_FreeSurface(shipsurface);
 	SDL_FreeSurface(infosurface);
-	SDL_FreeSurface(backsurface);
 	SDL_Quit();
 }
