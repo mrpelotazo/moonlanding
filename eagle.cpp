@@ -90,12 +90,7 @@ void CEagle::deactMainEngine() {
 }
 
 unsigned short CEagle::getMainEngineStatus() {
-	if (mainthrust == OFF_MAIN_THRUST) {
-		return 0;
-	} 
-	else {
-		return 1;
-	}
+	return mainthrust;
 }
 
 unsigned short CEagle::update(unsigned short td) {
