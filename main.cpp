@@ -28,26 +28,31 @@ int main(int argc, char *argv[]) {
 
 	/* initialize screen, surfaces and fonts */
 	if ((screen = initScreen()) == NULL) {
+		printf("%s\n", SDL_GetError());
 		SDL_Quit();
 		return -1;
 	}
 
 	if ((infosurface = initSurface(inforect)) == NULL) {
+		printf("%s\n", SDL_GetError());
 		SDL_Quit();
 		return -1;
 	}
 
 	if ((clearSurface(screen)) != 0) {
+		printf("%s\n", SDL_GetError());
 		SDL_Quit();
 		return -1;
 	}
 
 	if ((clearSurface(infosurface)) != 0) {
+	  	printf("%s\n", SDL_GetError());
 		SDL_Quit();
 		return -1;
 	}
 
 	if ((font = initFont()) == NULL) {
+		printf("%s\n", SDL_GetError());
 		SDL_Quit();
 		return -1;
 	}
