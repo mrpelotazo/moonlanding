@@ -159,7 +159,7 @@ float CEagle::radToDeg(float a) {
 }
 
 float CEagle::normAng(float a) {
-	return fmod(a, 2 * PI);
+	return fmod(a, (float)(2 * PI));
 }
 
 unsigned short CEagle::mainThrustToPerc(unsigned short t) {
