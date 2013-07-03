@@ -6,17 +6,15 @@
 
 /* constants */
 #define SHIP_SHAPE_W         60
-#define SHIP_SHAPE_H         80
-#define FLAME_SHAPE_W        SHIP_SHAPE_W
-#define FLAME_SHAPE_H        60
-#define FLAME_OVERLAP        10
+#define SHIP_SHAPE_H         180
 #define CLEAR_SURFACE_OFFSET 10
 
 /* sprites paths */
-#define SHIP_SPRITE        "sprites/ship.png"
-#define FLAME_SPRITE_BIG   "sprites/flame_big.png"
-#define FLAME_SPRITE_MID   "sprites/flame_mid.png"
-#define FLAME_SPRITE_LOW   "sprites/flame_low.png"
+#define SHIP_SPRITE_NO_FLAME  "sprites/ship_no_flame.png"
+#define SHIP_SPRITE_BIG_FLAME "sprites/ship_big_flame.png"
+#define SHIP_SPRITE_MID_FLAME "sprites/ship_mid_flame.png"
+#define SHIP_SPRITE_LOW_FLAME "sprites/ship_low_flame.png"
+
 
 /* the ship class holding its drawing surface and position/size rect
  * it also holds a CEagle object with the internal ship logic.
@@ -31,16 +29,12 @@ class CShip {
 		CEagle *eagle;
 
 	private:
-		SDL_Surface *shipsprite;       /* the ship sprite */
-		SDL_Surface *flamespritebig;   /* the flame sprites */
-		SDL_Surface *flamespritemid;    
-		SDL_Surface *flamespritelow;  
-		SDL_Surface *shiprotsprite;    /* the rotated ship surface */
-		SDL_Surface *flamerotsprite;   /* the rotated flame surface */
+		SDL_Surface *ssprite;          /* the current active sprite */
+		SDL_Surface *ssprite_noflame;  /* the ship sprites */
+		SDL_Surface *ssprite_bigflame;
+		SDL_Surface *ssprite_midflame;    
+		SDL_Surface *ssprite_lowflame;  
+		SDL_Surface *shiprotsprite;    /* the rotated ship sprite */
 		SDL_Rect *shiprect;            /* rect with ship sprite position and size */
-		SDL_Rect *shiprectclr;         /* rect to clear the ship shape */
-		SDL_Rect *flamerect;           /* rect with flame sprite position and size */
-
-		/* draw the flame? */
-		unsigned short drawflame; /* 1-> yes, 0->no */
+		SDL_Rect *shiprectclr;         /* rect to clear the ship shape */	
 };
