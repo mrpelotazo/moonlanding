@@ -16,7 +16,7 @@
 #define MAX_GRND_H SCREEN_H/2
 #define MIN_GRND_H SCREEN_H/2
 #define LAND_POS_W SHIP_SHAPE_W + 20
-#define FONT_PATH "/usr/share/fonts/TTF/DejaVuSansMono.ttf"
+#define FONT_PATH "/usr/share/fonts/dejavu/DejaVuSansMono.ttf"
 #define FONT_SIZE 17
 
 /* Initializes SDL video and a screen */
@@ -50,7 +50,7 @@ void genGround(int glx[], int gly[], int *length);
 void drawGround(SDL_Surface *dst, int glx[], int gly[], int length);
 
 /* Shows the eagle information on the given surface */
-void showShipInfo(SDL_Surface *ps, CShip s, TTF_Font *pf, SDL_Color c);
+void showShipInfo(SDL_Surface *dst, CShip s, TTF_Font *pf, SDL_Color c);
 
 /* Update the screen surface. Blit the other surfaces into the screen */
-void updateScreen(SDL_Surface *dst, SDL_Surface *ss, SDL_Surface *is,SDL_Surface *bs, SDL_Rect *sr, SDL_Rect *ir, SDL_Rect *br);
+void updateScreen(SDL_Surface *dst, SDL_Surface *ss, SDL_Surface *is, SDL_Rect *sr, SDL_Rect *ir);
