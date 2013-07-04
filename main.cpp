@@ -10,9 +10,9 @@ int main(int argc, char *argv[]) {
 	SDL_Event event;
 	SDL_Surface *screen, *shipsurface, *infosurface, *backsurface;
 	SDL_Color textcolor = {255, 255, 255};
-	SDL_Rect shiprect = {0, 0, SHIP_SURFACE_W, SHIP_SURFACE_H};
-	SDL_Rect inforect = {0, SHIP_SURFACE_H, INFO_SURFACE_W, INFO_SURFACE_H};
-	SDL_Rect backrect = {0, 0, SHIP_SURFACE_W, SHIP_SURFACE_H};
+	SDL_Rect shipsurfrect = {0, 0, SHIP_SURFACE_W, SHIP_SURFACE_H};
+	SDL_Rect infosurfrect = {0, SHIP_SURFACE_H, INFO_SURFACE_W, INFO_SURFACE_H};
+
 	int starlistx[STAR_NUM];
 	int starlisty[STAR_NUM];
 	int grndlistx[MAX_PEAKS];
@@ -26,19 +26,25 @@ int main(int argc, char *argv[]) {
 	unsigned short running = 1;
 
 
-	/* initialize screen, surfaces and fonts */
+	/* initialize surfaces and fonts */
 	if ((screen = initScreen()) == NULL) {
 		printf("%s\n", SDL_GetError());
 		SDL_Quit();
 		return -1;
 	}
 
-	if ((infosurface = initSurface(inforect)) == NULL) {
+	if ((shipsurface = initSurface(shipsurfrect)) == NULL) {
+		printf("%s\n", SDL_GetError());
+		SDL_Quit();
+		return -1;
+	}	
+	
+	if ((infosurface = initSurface(infosurfrect)) == NULL) {
 		printf("%s\n", SDL_GetError());
 		SDL_Quit();
 		return -1;
 	}
-
+	
 	if ((clearSurface(screen)) != 0) {
 		printf("%s\n", SDL_GetError());
 		SDL_Quit();
@@ -50,6 +56,12 @@ int main(int argc, char *argv[]) {
 		SDL_Quit();
 		return -1;
 	}
+	
+	if ((clearSurface(shipsurface)) != 0) {
+	  	printf("%s\n", SDL_GetError());
+		SDL_Quit();
+		return -1;
+	}	
 
 	if ((font = initFont()) == NULL) {
 		printf("%s\n", SDL_GetError());
@@ -59,11 +71,11 @@ int main(int argc, char *argv[]) {
 
 	/* draw the stars an the background surface */
 	genStars(starlistx, starlisty);
-	drawStars(screen, starlistx, starlisty);
+	drawStars(shipsurface, starlistx, starlisty);
 
 	/* draw the ground */
 	genGround(grndlistx, grndlisty, &grndlistlength);
-	drawGround(screen, grndlistx, grndlisty, grndlistlength);
+	drawGround(shipsurface, grndlistx, grndlisty, grndlistlength);
 
 	currenttime = SDL_GetTicks();
 
@@ -83,23 +95,25 @@ int main(int argc, char *argv[]) {
 		/* update ship data */
 		ship.update(timedelta);
 
-		/* redraw the ship on the screen */
-		ship.clear(screen);
-		drawStars(screen, starlistx, starlisty);
-		drawGround(screen, grndlistx, grndlisty, grndlistlength);
-		ship.draw(screen);
+		/* update the shipsurface */
+		ship.clear(shipsurface);
+		drawStars(shipsurface, starlistx, starlisty);
+		drawGround(shipsurface, grndlistx, grndlisty, grndlistlength);
+		ship.draw(shipsurface);
 
-		/* blit ship info on the screen */
-		//showShipInfo(infosurface, ship, font, textcolor);
+		/* update the infosurface */
+		showShipInfo(infosurface, ship, font, textcolor);
 
 		/* draw surfaces into screen surface */
-//		updateScreen(screen, shipsurface, infosurface, backsurface, &shiprect, &inforect, &backrect);
+		updateScreen(screen, shipsurface, infosurface, &shipsurfrect, &infosurfrect);
 
 		SDL_Flip(screen);
 	}
 
 	/* free surfaces and quit SDL */
 	SDL_FreeSurface(screen);
+	SDL_FreeSurface(shipsurface);
 	SDL_FreeSurface(infosurface);
 	SDL_Quit();
+	return 0;
 }
