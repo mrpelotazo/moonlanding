@@ -174,7 +174,7 @@ void eventHandler(SDL_Event e, CShip s, unsigned short *r) {
 	}
 }
 
-void showShipInfo(SDL_Surface *ps, CShip s, TTF_Font *pf, SDL_Color c) {
+void showShipInfo(SDL_Surface *dst, CShip s, TTF_Font *pf, SDL_Color c) {
 
 	char *paux;
 	char buff[100];
@@ -183,18 +183,17 @@ void showShipInfo(SDL_Surface *ps, CShip s, TTF_Font *pf, SDL_Color c) {
 	s.eagle->getShipInfoStr(shipinfostr);
 	SDL_Rect dstrect = {0, 0, 0, 0};
 	paux = strtok(shipinfostr, "\n");
-	clearSurface(ps);
+	clearSurface(dst);
 	while (paux != NULL) {
 		strcpy(buff, paux);
 		paux = strtok(NULL,"\n");
 		textsurf = TTF_RenderText_Solid(pf, buff, c);
-		SDL_BlitSurface(textsurf, NULL, ps, &dstrect);
+		SDL_BlitSurface(textsurf, NULL, dst, &dstrect);
 		dstrect.y += textsurf->h;
 	}
 }
 
-void updateScreen(SDL_Surface *dst, SDL_Surface *ss, SDL_Surface *is,SDL_Surface *bs, SDL_Rect *sr, SDL_Rect *ir, SDL_Rect *br) {
-	SDL_BlitSurface(bs, NULL, dst, br);
+void updateScreen(SDL_Surface *dst, SDL_Surface *ss, SDL_Surface *is, SDL_Rect *sr, SDL_Rect *ir) {
 	SDL_BlitSurface(ss, NULL, dst, sr);
 	SDL_BlitSurface(is, NULL, dst, ir);
 }
