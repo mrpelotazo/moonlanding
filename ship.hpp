@@ -17,7 +17,8 @@
 
 
 /* the ship class holding its drawing surface and position/size rect
- * it also holds a CEagle object with the internal ship logic.
+ * the sprites with different flame sizes and a CEagle object with 
+ * the internal ship logic.
  */
 class CShip {
 
