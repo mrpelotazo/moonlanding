@@ -14,7 +14,7 @@
 #define MAX_PEAKS_PER_SIDE 5
 #define MAX_PEAKS MAX_PEAKS_PER_SIDE * 2 + 10 
 #define MAX_GRND_H SCREEN_H/2
-#define MIN_GRND_H SCREEN_H/2
+#define MIN_GRND_H SCREEN_H/3
 #define LAND_POS_W SHIP_SHAPE_W + 20
 #define FONT_PATH "/usr/share/fonts/dejavu/DejaVuSansMono.ttf"
 #define FONT_SIZE 17
