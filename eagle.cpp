@@ -14,7 +14,8 @@ CEagle::CEagle(float px, float py) {
 	oxigen = 100.0;
 	rotleft = 0;
 	rotright = 0;
-	mainthrust = OFF_MAIN_THRUST;
+	thruststatus = OFF_MAIN_THRUST;
+	fuelstatus = FUEL_OK;
 }
 
 float CEagle::getPosx() {
@@ -38,7 +39,7 @@ float CEagle::getPrintAngDeg() {
 }
 
 unsigned short CEagle::getPrintThrust() {
-	return mainThrustToPerc(mainthrust);
+	return mainThrustToPerc(thruststatus);
 }
 
 void CEagle::rotLeft(float d) {
@@ -69,13 +70,13 @@ short CEagle::actMainEngine(short e) {
 	if (fuel > 0) {
 		switch (e) {
 			case 0:
-				mainthrust = LOW_MAIN_THRUST;
+				thruststatus = LOW_MAIN_THRUST;
 				break;
 			case 1:
-				mainthrust = MID_MAIN_THRUST;
+				thruststatus = MID_MAIN_THRUST;
 				break;
 			case 2:
-				mainthrust = MAX_MAIN_THRUST;
+				thruststatus = MAX_MAIN_THRUST;
 				break;
 			default:
 				return -1;
@@ -86,11 +87,11 @@ short CEagle::actMainEngine(short e) {
 }
 
 void CEagle::deactMainEngine() {
-	mainthrust = OFF_MAIN_THRUST;
+	thruststatus = OFF_MAIN_THRUST;
 }
 
 unsigned short CEagle::getMainEngineStatus() {
-	return mainthrust;
+	return thruststatus;
 }
 
 unsigned short CEagle::update(unsigned short td) {
@@ -111,12 +112,12 @@ unsigned short CEagle::update(unsigned short td) {
 	posy += vely * tdsecs;
 	velx += accx * tdsecs;
 	vely += accy * tdsecs;
-	accx = mainthrust * sin(ang) / SHIP_MASS;
-	accy = (mainthrust * cos(ang) - (SHIP_MASS * MOON_ACC)) / SHIP_MASS;
+	accx = thruststatus * sin(ang) / SHIP_MASS;
+	accy = (thruststatus * cos(ang) - (SHIP_MASS * MOON_ACC)) / SHIP_MASS;
 
 	/* update fuel */
 	if (fuel > 0.0) {
-		fuel -= (float)(mainthrust) / (float)(MAX_MAIN_THRUST) * tdsecs;
+		fuel -= (float)(thruststatus) / (float)(MAX_MAIN_THRUST) * tdsecs;
 		if (fuel < 0.0) {
 			fuel = 0.0;
 
