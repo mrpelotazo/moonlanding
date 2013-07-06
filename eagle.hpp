@@ -5,12 +5,22 @@
 #define DEG 57.2957           /* 1rad = 57,29deg */
 #define PI 3.1415
 #define MOON_ACC 1.622        /* Moon acceleration [m/s^2]*/
-#define MAX_MAIN_THRUST 45000 /* Max mainthrust [N] */
-#define MID_MAIN_THRUST 27000 /* 60% mainthrust */
-#define LOW_MAIN_THRUST 4500  /* 10% mainthrust */
-#define OFF_MAIN_THRUST 0
 #define SHIP_MASS 15000       /* The ship mass [kg] */
 
+/* engine status */
+typedef enum {
+	OFF_MAIN_THRUST,
+	MAX_MAIN_THRUST=45000,
+	MID_MAIN_THRUST=27000,
+	LOW_MAIN_THRUST=4500
+} thrust_status_t;
+
+/* fuel status */
+typedef enum {
+	FUEL_OK,
+	FUEL_LOW,
+	FUEL_OUT
+} fuel_status_t;
 
 class CEagle {
 
@@ -82,7 +92,8 @@ class CEagle {
 		float oxigen;
 		unsigned short rotleft;
 		unsigned short rotright;
-		unsigned short mainthrust;
+		thrust_status_t thruststatus;
+		fuel_status_t fuelstatus;
 
 		/* private methodes */
 		float degToRad(float a);
